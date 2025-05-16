@@ -7,9 +7,6 @@ import os
 # Sets upp the app's layout and browser title
 st.set_page_config(page_title="3D Printer Monitor", layout="wide")
 
-# Load data
-DATA_PATH = os.path.join("..", "data", "printer_log.csv")
-
 # Read Data and convert timestamp column to datetime object
 df = pd.read_csv("printer_log.csv", parse_dates=["timestamp"])
 
