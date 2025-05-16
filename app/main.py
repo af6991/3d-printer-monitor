@@ -8,7 +8,7 @@ import os
 st.set_page_config(page_title="3D Printer Monitor", layout="wide")
 
 # Read Data and convert timestamp column to datetime object
-df = pd.read_csv("printer_log.csv", parse_dates=["timestamp"])
+df = pd.read_csv("./app/printer_log.csv", parse_dates=["timestamp"])
 
 st.title("🖨️ 3D Printer Monitoring Dashboard")
 st.markdown("Monitor your printer's performance and early failure signals.")
