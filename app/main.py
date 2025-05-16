@@ -35,38 +35,42 @@ st.progress(progress / 100)
 time_elapsed = df["time_elapsed"].iloc[-1]
 st.metric("Print Time Elapsed (min)", f"{time_elapsed}")
 
-d_nozzle = df["nozzle_temp"].iloc[-2] - df["nozzle_temp"].iloc[-1]
-d_bed = df["bed_temp"].iloc[-2] - df["bed_temp"].iloc[-1]
-d_time = df["time_elapsed"].iloc[-2] - df["time_elapsed"].iloc[-1]
+d_nozzle = int(df["nozzle_temp"].iloc[-2] - df["nozzle_temp"].iloc[-1])
+d_bed = int(df["bed_temp"].iloc[-2] - df["bed_temp"].iloc[-1])
+d_time = int(df["time_elapsed"].iloc[-2] - df["time_elapsed"].iloc[-1])
 
 # Temperature Metrics
-col1, col2, col3 = st.columns(3)
-col1.metric("Nozzle Temp (°C)", df["nozzle_temp"].iloc[-1], d_nozzle)
-col2.metric("Bed Temp (°C)", df["bed_temp"].iloc[-1], d_bed)
-col3.metric("Time Elapsed (minutes)", df["time_elapsed"].iloc[-1], d_time)
+with st.container():
+    st.subheader("Temperature Metrics")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Nozzle Temp (°C)", df["nozzle_temp"].iloc[-1], d_nozzle)
+    col2.metric("Bed Temp (°C)", df["bed_temp"].iloc[-1], d_bed)
+    col3.metric("Time Elapsed (minutes)", df["time_elapsed"].iloc[-1], d_time)
 
 
 
 # Error Alerts
 
 alerts = []
-        
-#check if that nozzle temperature is to low
-if df["nozzle_temp"].iloc[-1] < 160:
-    alerts.append("Nozzle temperature too low")
 
-if df["bed_temp"].iloc[-1] < 60:
-    alerts.append("Bed temperature too low, bed detachment possible")
-    
-if df["layer_shift"].iloc[-1] == True:
-    alerts.append("Layer shift detected - mechanical instability or sudden jerk")
-    
-if df["time_elapsed"].iloc[-1] > 300:
-    alerts.append("Abnormal printing time - possible mechanical failure")
-    
-if len(alerts) == 0:
-    st.success("No alerts detected")
-    
-else:
-    for alert in alerts:
-        st.warning(alert)
+
+with st.container():  
+    #check if that nozzle temperature is to low
+    if df["nozzle_temp"].iloc[-1] < 160:
+        alerts.append("Nozzle temperature too low")
+
+    if df["bed_temp"].iloc[-1] < 60:
+        alerts.append("Bed temperature too low, bed detachment possible")
+        
+    if df["layer_shift"].iloc[-1] == True:
+        alerts.append("Layer shift detected - mechanical instability or sudden jerk")
+        
+    if df["time_elapsed"].iloc[-1] > 300:
+        alerts.append("Abnormal printing time - possible mechanical failure")
+        
+    if len(alerts) == 0:
+        st.success("No alerts detected")
+        
+    else:
+        for alert in alerts:
+            st.warning(alert)
